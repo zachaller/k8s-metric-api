@@ -1,0 +1,6 @@
+domain: metrics-api.io
+layout:
+- go.kubebuilder.io/v4-alpha
+projectName: k8s-metrics-api
+repo: github.com/zachaller/k8s-metrics-api
+version: "3"
