@@ -1,4 +1,3 @@
-
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -6,6 +5,7 @@
 *.so
 *.dylib
 bin
+apiserver/bin/*
 testbin/*
 Dockerfile.cross
 
