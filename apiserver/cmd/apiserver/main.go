@@ -34,6 +34,7 @@ func main() {
 		//WithResourceAndHandler(&prometheusv1.MetricQueryRun{}, filepath.NewJSONFilepathStorageProvider(&prometheusv1.MetricQueryRun{}, "data")).
 		WithResourceAndHandler(&prometheusv1.MetricQueryRun{}, memoryStorage.NewMemoryStorageProvider(&prometheusv1.MetricQueryRun{})).
 		WithLocalDebugExtension().
+		WithoutEtcd().
 		Build()
 	cmd.Execute()
 	if err != nil {
