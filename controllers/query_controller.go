@@ -83,9 +83,6 @@ func (r *QueryReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 		Spec: prometheusv1.MetricQueryRunSpec{},
 	}
 
-	//client, _, err := kubeclient.NewKubeClient()
-	//dynClient.Resource(metricQueryRun.GetGroupVersionResource()).Namespace(metricQuery.Namespace).Create(ctx, &metricQueryRun., metav1.CreateOptions{})
-	//r.Client.Create(ctx, &metricQueryRun)
 	err = r.Client.Create(ctx, &metricQueryRun)
 	if err != nil {
 		return ctrl.Result{}, err

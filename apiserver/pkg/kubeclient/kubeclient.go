@@ -15,8 +15,8 @@ func NewKubeClient() (*kubernetes.Clientset, dynamic.Interface, error) {
 	config, err := rest.InClusterConfig()
 	if err != nil {
 		if home := homedir.HomeDir(); home != "" {
-			kubeconfig = filepath.Join(home, ".kube", "config_back")
-			kubeconfig = "/Users/zaller/Development/test-api-3/src/github.com/argoproj/metrics/kubeconfig"
+			kubeconfig = filepath.Join(home, ".kube", "config")
+			//kubeconfig = "/Users/zaller/Development/test-api-3/src/github.com/argoproj/metrics/kubeconfig"
 		}
 		// use the current context in kubeconfig
 		config, err = clientcmd.BuildConfigFromFlags("", kubeconfig)

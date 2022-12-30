@@ -131,9 +131,8 @@ func (f *memoryREST) Get(
 		return nil, err
 	}
 
-	v := query.QueryTemplate{}
-	//un, err := dynamicClient.Resource(v.GetGroupVersionResource()).Namespace(mqr.Namespace).Get(ctx, mqr.ObjectMeta.OwnerReferences[0].Name, metav1.GetOptions{})
-	un, err := dynamicClient.Resource(v.GetGroupVersionResource()).Namespace(mqr.Namespace).Get(ctx, "test-run-3", metav1.GetOptions{})
+	v := query.Query{}
+	un, err := dynamicClient.Resource(v.GetGroupVersionResource()).Namespace(mqr.Namespace).Get(ctx, mqr.ObjectMeta.OwnerReferences[0].Name, metav1.GetOptions{})
 	if err != nil {
 		return nil, err
 	}

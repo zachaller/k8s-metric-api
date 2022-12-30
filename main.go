@@ -18,6 +18,7 @@ package main
 
 import (
 	"flag"
+	prometheusv1 "github.com/zachaller/k8s-metrics-api/apiserver/pkg/apis/prometheus/v1"
 	"os"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
@@ -46,6 +47,8 @@ func init() {
 
 	utilruntime.Must(queryv1.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
+
+	utilruntime.Must(prometheusv1.AddToScheme(scheme))
 }
 
 func main() {
