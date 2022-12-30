@@ -18,6 +18,7 @@ package v1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
@@ -81,6 +82,14 @@ type ClusterQueryTemplateList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ClusterQueryTemplate `json:"items"`
+}
+
+func (cqt *ClusterQueryTemplate) GetGroupVersionResource() schema.GroupVersionResource {
+	return schema.GroupVersionResource{
+		Group:    "query.metrics-api.io",
+		Version:  "v1",
+		Resource: "clusterquerytemplates",
+	}
 }
 
 func init() {

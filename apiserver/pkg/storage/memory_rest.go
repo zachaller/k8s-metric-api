@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zachaller/k8s-metrics-api/apiserver/pkg/kubeclient"
-	"github.com/zachaller/k8s-metrics-api/apiserver/pkg/metricproviders/prometheus"
 	"k8s.io/apimachinery/pkg/util/json"
 	"k8s.io/apimachinery/pkg/util/uuid"
 	"path/filepath"
@@ -133,11 +132,8 @@ func (f *memoryREST) Get(
 	}
 
 	v := query.QueryTemplate{}
-	un, err := dynamicClient.Resource(schema.GroupVersionResource{
-		Group:    "",
-		Version:  "",
-		Resource: "",
-	}).Namespace(mqr.Namespace).Get(ctx, mqr.ObjectMeta.OwnerReferences[0].Name, metav1.GetOptions{})
+	//un, err := dynamicClient.Resource(v.GetGroupVersionResource()).Namespace(mqr.Namespace).Get(ctx, mqr.ObjectMeta.OwnerReferences[0].Name, metav1.GetOptions{})
+	un, err := dynamicClient.Resource(v.GetGroupVersionResource()).Namespace(mqr.Namespace).Get(ctx, "test-run-3", metav1.GetOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -152,32 +148,37 @@ func (f *memoryREST) Get(
 		return nil, err
 	}
 
-	pClient, err := prometheus.NewPrometheus(v.Spec.Providers.Prometheus[0].Address)
-	if err != nil {
-		return nil, err
-	}
+	//pClient, err := prometheus.NewPrometheus(v.Spec.Providers.Prometheus[0].Address)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//
+	//timeLength, err := time.ParseDuration(v.Spec.Providers.Prometheus[0].TimeLength)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//
+	//step, err := time.ParseDuration(v.Spec.Providers.Prometheus[0].Step)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//
+	//for _, query := range v.Spec.Providers.Prometheus[0].Queries {
+	//	res, err := pClient.Query(ctx, query.Query, time.Now().Add(-timeLength), time.Now(), step)
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//
+	//	mqr.Spec.Results = append(mqr.Spec.Results, prometheusv1.Result{
+	//		Name:   query.Name,
+	//		Result: res,
+	//	})
+	//}
 
-	timeLength, err := time.ParseDuration(v.Spec.Providers.Prometheus[0].TimeLength)
-	if err != nil {
-		return nil, err
-	}
-
-	step, err := time.ParseDuration(v.Spec.Providers.Prometheus[0].Step)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, query := range v.Spec.Providers.Prometheus[0].Queries {
-		res, err := pClient.Query(ctx, query.Query, time.Now().Add(-timeLength), time.Now(), step)
-		if err != nil {
-			return nil, err
-		}
-
-		mqr.Spec.Results = append(mqr.Spec.Results, prometheusv1.Result{
-			Name:   query.Name,
-			Result: res,
-		})
-	}
+	mqr.Spec.Results = append(mqr.Spec.Results, prometheusv1.Result{
+		Name:   "asdf",
+		Result: "[3,5,3,5,3,5]",
+	})
 
 	return mqr, nil
 }

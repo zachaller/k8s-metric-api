@@ -18,6 +18,8 @@ package controllers
 
 import (
 	"context"
+	prometheusv1 "github.com/zachaller/k8s-metrics-api/apiserver/pkg/apis/prometheus/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -49,7 +51,45 @@ type QueryReconciler struct {
 func (r *QueryReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	// TODO(user): your logic here
+	var metricQuery queryv1.Query
+	err := r.Client.Get(ctx, req.NamespacedName, &metricQuery)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	var metricQueryRun prometheusv1.MetricQueryRun
+	r.Client.Get(ctx, req.NamespacedName, &metricQueryRun) // ignore error because we want to create it if it doesn't exist
+	if metricQueryRun.Name == metricQuery.Name {
+		return ctrl.Result{}, err
+	}
+
+	annotations := metricQuery.GetAnnotations()
+	delete(annotations, "kubectl.kubernetes.io/last-applied-configuration")
+
+	metricQueryRun = prometheusv1.MetricQueryRun{
+		TypeMeta: metav1.TypeMeta{},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:        metricQuery.Name,
+			Namespace:   metricQuery.Namespace,
+			Labels:      metricQuery.Labels,
+			Annotations: annotations,
+			OwnerReferences: []metav1.OwnerReference{{
+				APIVersion: metricQuery.APIVersion,
+				Kind:       metricQuery.Kind,
+				Name:       metricQuery.Name,
+				UID:        metricQuery.UID,
+			}},
+		},
+		Spec: prometheusv1.MetricQueryRunSpec{},
+	}
+
+	//client, _, err := kubeclient.NewKubeClient()
+	//dynClient.Resource(metricQueryRun.GetGroupVersionResource()).Namespace(metricQuery.Namespace).Create(ctx, &metricQueryRun., metav1.CreateOptions{})
+	//r.Client.Create(ctx, &metricQueryRun)
+	err = r.Client.Create(ctx, &metricQueryRun)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
 
 	return ctrl.Result{}, nil
 }

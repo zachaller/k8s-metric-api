@@ -18,6 +18,7 @@ package v1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 //+kubebuilder:object:root=true
@@ -39,6 +40,14 @@ type QueryTemplateList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []QueryTemplate `json:"items"`
+}
+
+func (qt *QueryTemplate) GetGroupVersionResource() schema.GroupVersionResource {
+	return schema.GroupVersionResource{
+		Group:    "query.metrics-api.io",
+		Version:  "v1",
+		Resource: "querytemplates",
+	}
 }
 
 func init() {
