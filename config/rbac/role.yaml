@@ -1,0 +1,85 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - query.metrics-api.io
+  resources:
+  - clusterquerytemplates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - query.metrics-api.io
+  resources:
+  - clusterquerytemplates/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - query.metrics-api.io
+  resources:
+  - clusterquerytemplates/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - query.metrics-api.io
+  resources:
+  - queries
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - query.metrics-api.io
+  resources:
+  - queries/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - query.metrics-api.io
+  resources:
+  - queries/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - query.metrics-api.io
+  resources:
+  - querytemplates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - query.metrics-api.io
+  resources:
+  - querytemplates/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - query.metrics-api.io
+  resources:
+  - querytemplates/status
+  verbs:
+  - get
+  - patch
+  - update

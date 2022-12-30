@@ -30,6 +30,9 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+
+	queryv1 "github.com/zachaller/k8s-metrics-api/api/v1"
+	"github.com/zachaller/k8s-metrics-api/controllers"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -41,6 +44,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
+	utilruntime.Must(queryv1.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
 }
 
@@ -85,6 +89,27 @@ func main() {
 		os.Exit(1)
 	}
 
+	if err = (&controllers.ClusterQueryTemplateReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "ClusterQueryTemplate")
+		os.Exit(1)
+	}
+	if err = (&controllers.QueryTemplateReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "QueryTemplate")
+		os.Exit(1)
+	}
+	if err = (&controllers.QueryReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "Query")
+		os.Exit(1)
+	}
 	//+kubebuilder:scaffold:builder
 
 	if err := mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {

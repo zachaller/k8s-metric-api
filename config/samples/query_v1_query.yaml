@@ -1,0 +1,12 @@
+apiVersion: query.metrics-api.io/v1
+kind: Query
+metadata:
+  labels:
+    app.kubernetes.io/name: query
+    app.kubernetes.io/instance: query-sample
+    app.kubernetes.io/part-of: k8s-metrics-api
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: k8s-metrics-api
+  name: query-sample
+spec:
+  # TODO(user): Add fields here

@@ -1,0 +1,6 @@
+## Append samples of your project ##
+resources:
+- query_v1_clusterquerytemplate.yaml
+- query_v1_querytemplate.yaml
+- query_v1_query.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples

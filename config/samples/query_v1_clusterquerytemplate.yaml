@@ -1,0 +1,12 @@
+apiVersion: query.metrics-api.io/v1
+kind: ClusterQueryTemplate
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterquerytemplate
+    app.kubernetes.io/instance: clusterquerytemplate-sample
+    app.kubernetes.io/part-of: k8s-metrics-api
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: k8s-metrics-api
+  name: clusterquerytemplate-sample
+spec:
+  # TODO(user): Add fields here
